@@ -12,8 +12,13 @@ describe('Game5', function () {
     const { game } = await loadFixture(deployContractAndSetVariables);
 
     // good luck
+    let signer = await ethers.getSigners();
+    
+    signer = signer.filter(i=>(
+      parseInt(i.address) < (parseInt('0x00FfFFfFFFfFFFFFfFfFfffFFFfffFfFffFfFFFf'))
+    ));
 
-    await game.win();
+    await game.connect(signer[0]).win();
 
     // leave this assertion as-is
     assert(await game.isWon(), 'You did not win the game');
